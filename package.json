@@ -2,7 +2,7 @@
     "name": "endocreader",
     "displayName": "EnDocReader",
     "description": "extenstion for english document reading",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "publisher": "garicchi",
     "engines": {
         "vscode": "^1.0.0"
