@@ -1,50 +1,51 @@
 {
-    "name": "endocreader",
-    "displayName": "EnDocReader",
-    "description": "extenstion for english document reading",
-    "version": "0.3.0",
-    "publisher": "garicchi",
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "toggleColorCommand",
-                "title": "en: Toggle Coloring"
-            },
-            {
-                "command": "formatCommand",
-                "title": "en: Format Line"
-            },
-            {
-                "command": "googleTranslateCommand",
-                "title": "en: Google Translate"
-            },
-            {
-                "command": "innerTranslateCommand",
-                "title": "en: Inner Translate"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "devDependencies": {
-        "typescript": "^1.8.5",
-        "vscode": "^0.11.0"
-    },
-    "dependencies": {
-        "bing-translate": "0.0.2",
-        "pos": "^0.3.0"
-    }
+  "name": "endocreader",
+  "displayName": "EnDocReader",
+  "description": "extenstion for english document reading",
+  "version": "0.3.0",
+  "publisher": "garicchi",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "toggleColorCommand",
+        "title": "en: Toggle Coloring"
+      },
+      {
+        "command": "formatCommand",
+        "title": "en: Format Line"
+      },
+      {
+        "command": "googleTranslateCommand",
+        "title": "en: Google Translate"
+      },
+      {
+        "command": "innerTranslateCommand",
+        "title": "en: Inner Translate"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.5",
+    "vscode": "^0.11.0"
+  },
+  "dependencies": {
+    "bing-translate": "0.0.2",
+    "googleapis": "^12.3.0",
+    "pos": "^0.3.0"
+  }
 }
