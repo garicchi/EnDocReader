@@ -1,65 +1,93 @@
-# endocreader README
+# EnDocReader
 
-This is the README for your extension "endocreader". After writing up a brief description, we recommend including the following sections.
+EnDocReaderは**英語のドキュメントの精読をサポート**するVisualStudio CodeのExtensionです
 
-## Features
+VS Codeでレッツ英論ライフ！
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Install
 
-For example if there is an image subfolder under your extension project workspace:
+![insatll](./img/install.gif)
 
-\!\[feature X\]\(images/feature-x.png\)
+VS CodeのExtensionから**endocreader**と検索、インストール、有効化してください
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Windowsの場合は現在CRLF改行コードには対応していないのでステータスバーから**LF改行コード**に変更してください
 
-## Requirements
+## Usage
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+精読したい英文をVS Codeにコピー&ペーストし、<code>\`\`\`en</code>と<code>\`\`\`</code>で囲みます
 
-## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:
+\`\`\`en
 
-This extension contributes the following settings:
+This is sample sentence.
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+\`\`\`
 
-## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
-## Release Notes
+英文を囲んだら<code>Ctrl+Shift+P</code>でコマンド入力画面を立ち上げ、<code>en:</code>と入力することでコマンド一覧を表示し、使いたいコマンドを選択します
 
-Users appreciate release notes as you update your extension.
+## Format Sentence
 
-### 1.0.0
+![format](./img/format.gif)
 
-Initial release of ...
+英文1文の中に入っている不正な改行や文末が改行されていないような英文をすべて1文にフォーマットし直します
 
-### 1.0.1
+書く文の下には空白行が必ず入るので訳を書くことができます
 
-Fixed issue #.
+使い方はコマンド入力画面で<code>format line</code>と入力します
 
-### 1.1.0
+## Part Of Speech Coloring
 
-Added features X, Y, and Z.
+![coloring](./img/coloring.gif)
 
------------------------------------------------------------------------------------------------------------
+英文の品詞解析を行い、品詞ごとに色分けします
 
-## Working with Markdown
+どの色がどの品詞かは単語にマウスカーソルを当てるとポップアップとして表示されます
 
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+トグル機能なのでもう一度コマンドを使えば色は元に戻ります
 
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
+使い方はコマンド入力画面で<code>toggle coloring</code>と入力します
 
-### For more information
+## Inner Translate
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+![inner](./img/innertranslate.gif)
 
-**Enjoy!**
+選択した単語及び英文を翻訳し、翻訳結果を英文の下に自動記述します
+
+翻訳エンジンはBing Translatorなのでインターネット環境が必須です
+
+使い方は翻訳したいテキストを選択した状態でコマンド入力画面に行き、<code>inner translate</code>と入力します
+
+## Google Translate
+
+![google](./img/googletranslate.gif)
+
+選択した単語及び英文をGoogle翻訳を使って翻訳します
+
+ただしInner Translateと違い、エディタ内に翻訳結果の記載はしません
+
+コマンドを実行すると外部ブラウザが立ち上がり、Google翻訳のページで結果を確認できます
+
+使い方は翻訳したいテキストを選択した状態でコマンド入力画面に行き、<code>google translate</code>と入力します
+
+## ご要望
+Issueやpull requestしてくれると喜びます
+
+[@garicchi](http://twitter.com/garicchi)にリプライでも可
+
+## License
+
+MIT
+
+## Contribution
+
+元ネタは[drilldripper氏](https://github.com/drilldripper)のChrome拡張である[ColorPosTagger](https://github.com/drilldripper/ColorPosTagger)です
+
+品詞解析のコードをいくらか引用しています
+
+### npm パッケージ
+- 品詞解析エンジン: [pos](https://www.npmjs.com/package/pos)
+- Bing Translatorクライアント: [bing-translate](https://www.npmjs.com/package/bing-translate)
+
