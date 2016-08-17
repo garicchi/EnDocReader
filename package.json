@@ -25,8 +25,12 @@
         "title": "Format English"
       },
       {
-        "command": "translateCommand",
-        "title": "Translate"
+        "command": "googleTranslateCommand",
+        "title": "Google Translate"
+      },
+      {
+        "command": "innerTranslateCommand",
+        "title": "Inner Translate"
       }
     ]
   },
@@ -40,6 +44,7 @@
     "vscode": "^0.11.0"
   },
   "dependencies": {
+    "bing-translate": "0.0.2",
     "pos": "^0.3.0"
   }
 }

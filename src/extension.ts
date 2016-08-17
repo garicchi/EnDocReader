@@ -3,6 +3,10 @@
 import * as vscode from 'vscode';
 let fs = require('fs');
 let pos = require('pos');
+var bt = require('bing-translate').init({
+            client_id: 'endocreader', 
+            client_secret: 'TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk='
+        });
 var toggleColoring = false;
 let posStyleList = [];
 
@@ -44,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(coloringDis);
     
-    let translateDis = vscode.commands.registerCommand('translateCommand', () => {
+    let translateDis = vscode.commands.registerCommand('googleTranslateCommand', () => {
         let activeEditor = vscode.window.activeTextEditor;
         let selectStart = activeEditor.document.offsetAt(activeEditor.selection.start);
         let selectEnd = activeEditor.document.offsetAt(activeEditor.selection.end);
@@ -60,6 +64,28 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
     context.subscriptions.push(translateDis);
+    let translateInnerDis = vscode.commands.registerCommand('innerTranslateCommand', () => {
+        let activeEditor = vscode.window.activeTextEditor;
+        let startPos = activeEditor.selection.start;
+        let endPos = activeEditor.selection.end;
+        let selectStart = activeEditor.document.offsetAt(startPos);
+        let selectEnd = activeEditor.document.offsetAt(endPos);
+        let selectText = activeEditor.document.getText().slice(selectStart,selectEnd);
+        
+        vscode.window.setStatusBarMessage('translating...');
+        bt.translate(selectText, 'en', 'ja', function(err, res){
+            let text = res.translated_text;
+            if(text !== ''){
+                activeEditor.edit((builder)=>{
+                    builder.insert(new vscode.Position(startPos.line+1,0),'[ '+selectText+' : '+text+' ]\n');
+                });
+            }
+            vscode.window.setStatusBarMessage('翻訳結果：['+text+']');
+        });
+        
+
+    });
+    context.subscriptions.push(translateInnerDis);
 }
 
 // this method is called when your extension is deactivated
