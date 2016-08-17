@@ -2,36 +2,36 @@
     {
         "name":"noun",
         "ja":"名詞",
-        "color":"#00FF00"
+        "color":"#00a7db"
     },
     {
         "name":"adjective",
         "ja":"形容詞",
-        "color":"#0000FF"
+        "color":"#6cbb5a"
     },
     {
         "name":"verb",
         "ja":"動詞",
-        "color":"#FFA500"
+        "color":"#f39700"
     },
     {
         "name":"auxiliaryVerb",
         "ja":"助動詞",
-        "color":"#9ACD32"
+        "color":"#0078ba"
     },
     {
         "name":"relative",
         "ja":"関係詞",
-        "color":"#008080"
+        "color":"#e5171f"
     },
     {
         "name":"conjunction",
         "ja":"接続詞",
-        "color":"#00FF00"
+        "color":"#e85298"
     },
     {
         "name":"determiner",
         "ja":"限定詞",
-        "color":"#AAAAAA"
+        "color":"#9b7cb6"
     }
 ]
