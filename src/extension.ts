@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
             builder.replace(allRange,split);
         });
         
-        vscode.window.showInformationMessage('format english done!');
+        vscode.window.setStatusBarMessage('format english done!');
     });
     context.subscriptions.push(formatDis);
 
@@ -71,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
         let selectStart = activeEditor.document.offsetAt(startPos);
         let selectEnd = activeEditor.document.offsetAt(endPos);
         let selectText = activeEditor.document.getText().slice(selectStart,selectEnd);
-        
+        if(selectText !== ''){
         vscode.window.setStatusBarMessage('translating...');
         bt.translate(selectText, 'en', 'ja', function(err, res){
             let text = res.translated_text;
@@ -81,8 +81,10 @@ export function activate(context: vscode.ExtensionContext) {
                 });
             }
             vscode.window.setStatusBarMessage('翻訳結果：['+text+']');
-        });
-        
+            });
+        }else{
+            vscode.window.showInformationMessage('select you want to translate!');
+        }
 
     });
     context.subscriptions.push(translateInnerDis);

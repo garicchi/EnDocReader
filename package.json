@@ -18,19 +18,19 @@
     "commands": [
       {
         "command": "toggleColorCommand",
-        "title": "Toggle Coloring"
+        "title": "en: Toggle Coloring"
       },
       {
         "command": "formatCommand",
-        "title": "Format English"
+        "title": "en: Format Line"
       },
       {
         "command": "googleTranslateCommand",
-        "title": "Google Translate"
+        "title": "en: Google Translate"
       },
       {
         "command": "innerTranslateCommand",
-        "title": "Inner Translate"
+        "title": "en: Inner Translate"
       }
     ]
   },
