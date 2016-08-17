@@ -9,6 +9,7 @@ var bt = require('bing-translate').init({
         });
 var toggleColoring = false;
 let posStyleList = [];
+let transWordStyleList:vscode.TextEditorDecorationType[] = [];
 
 export function activate(context: vscode.ExtensionContext) {
     
@@ -20,6 +21,8 @@ export function activate(context: vscode.ExtensionContext) {
             color:posStyleList[i].color
         });
     }
+
+    
     
     let formatDis = vscode.commands.registerCommand('formatCommand', () => {
         let activeEditor = vscode.window.activeTextEditor;
@@ -76,9 +79,18 @@ export function activate(context: vscode.ExtensionContext) {
         bt.translate(selectText, 'en', 'ja', function(err, res){
             let text = res.translated_text;
             if(text !== ''){
+                let sentence = '[ '+selectText+' : '+text+' ]\n'
+                let wordStart = new vscode.Position(startPos.line+1,0);
+                let wordEnd = new vscode.Position(startPos.line+1,sentence.length-1);
                 activeEditor.edit((builder)=>{
-                    builder.insert(new vscode.Position(startPos.line+1,0),'[ '+selectText+' : '+text+' ]\n');
+                    
+                    builder.insert(wordStart,sentence);
                 });
+                let transWordStyle = vscode.window.createTextEditorDecorationType({
+                    color:'#878787'
+                });
+                transWordStyleList.push(transWordStyle);
+                activeEditor.setDecorations(transWordStyle,[{ range: new vscode.Range(wordStart, wordEnd),hoverMessage:null}]);
             }
             vscode.window.setStatusBarMessage('翻訳結果：['+text+']');
             });
