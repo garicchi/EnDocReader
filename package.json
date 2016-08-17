@@ -17,8 +17,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "coloringPosCommand",
-        "title": "Coloring Pos"
+        "command": "toggleColorCommand",
+        "title": "Toggle Coloring"
       },
       {
         "command": "formatCommand",

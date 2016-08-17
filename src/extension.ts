@@ -4,9 +4,19 @@ import * as vscode from 'vscode';
 let fs = require('fs');
 let pos = require('pos');
 var toggleColoring = false;
+let posStyleList = [];
 
 export function activate(context: vscode.ExtensionContext) {
+    
+    let jsonFile = fs.readFileSync(__dirname+'/../../posstyle.json', 'utf8')
+    posStyleList = JSON.parse(jsonFile);
 
+    for(let i =0;i<posStyleList.length;i++){
+        posStyleList[i].decoration = vscode.window.createTextEditorDecorationType({
+            color:posStyleList[i].color
+        });
+    }
+    
     let formatDis = vscode.commands.registerCommand('formatCommand', () => {
         let activeEditor = vscode.window.activeTextEditor;
         let text = activeEditor.document.getText();
@@ -23,14 +33,14 @@ export function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(formatDis);
 
-    let coloringDis = vscode.commands.registerCommand('coloringPosCommand',()=>{
+    let coloringDis = vscode.commands.registerCommand('toggleColorCommand',()=>{
         toggleColoring = !toggleColoring;
-        let jsonFile = fs.readFileSync(__dirname+'/../../posstyle.json', 'utf8')
-        let posstyleJson = JSON.parse(jsonFile);
+        
         let activeEditor = vscode.window.activeTextEditor;
         let text = activeEditor.document.getText();
         
-        decoratePartOfSpeech(text,posstyleJson,activeEditor);
+        decoratePartOfSpeech(text,posStyleList,activeEditor);
+
     });
     context.subscriptions.push(coloringDis);
     
@@ -165,14 +175,17 @@ function decoratePartOfSpeech(text:string,posstyleJson:any,activeEditor:vscode.T
 
   for(let i =0;i<posstyleJson.length;i++){
       let option = getDecorateOptions(posstyleJson[i],posInfoList);
-      activeEditor.setDecorations(option.type,option.options);
+      if(toggleColoring){
+          activeEditor.setDecorations(posstyleJson[i].decoration,option);
+      }else{
+          activeEditor.setDecorations(posstyleJson[i].decoration,[]);
+      }
+      
   }
 }
 
 function getDecorateOptions(posdescribe:any,posInfoList:PosInfo[]){
-    let decorationType = vscode.window.createTextEditorDecorationType({
-		        color:posdescribe.color
-	        });
+
     let options:vscode.DecorationOptions[] = [];
     for(let i =0;i<posInfoList.length;i++){
         let info = posInfoList[i];
@@ -182,10 +195,7 @@ function getDecorateOptions(posdescribe:any,posInfoList:PosInfo[]){
 
         }
     }
-    return {
-        type:decorationType,
-        options:options
-    };
+    return options;
 }
 
 function getPosList(line){
