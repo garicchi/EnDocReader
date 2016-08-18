@@ -7,7 +7,7 @@ import * as st from './settings';
 import * as fs from 'fs';
 
 var toggleColoring = false;
-var activeEOF = null;
+var activeEOL = null;
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -17,12 +17,14 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.window.onDidChangeActiveTextEditor(function(){
     updateActiveEof();
   });
+  
   posdecorator.initBingTranslator();
 
   let formatDis = vscode.commands.registerCommand('formatCommand', () => {
+    updateActiveEof();
     let activeEditor = vscode.window.activeTextEditor;
     let text = activeEditor.document.getText();
-    let split = textop.getSplitLine(text, true,activeEOF);
+    let split = textop.getSplitLine(text, true,activeEOL);
 
     activeEditor.edit((builder) => {
       let startPos = activeEditor.document.positionAt(0);
@@ -36,12 +38,13 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(formatDis);
 
   let coloringDis = vscode.commands.registerCommand('toggleColorCommand', () => {
+    updateActiveEof();
     toggleColoring = !toggleColoring;
 
     let activeEditor = vscode.window.activeTextEditor;
     let text = activeEditor.document.getText();
 
-    posdecorator.decoratePartOfSpeech(text, activeEditor, toggleColoring,activeEOF);
+    posdecorator.decoratePartOfSpeech(text, activeEditor, toggleColoring,activeEOL);
 
   });
   context.subscriptions.push(coloringDis);
@@ -91,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   let translateInnerDis = vscode.commands.registerCommand('innerTranslateCommand', () => {
     let activeEditor = vscode.window.activeTextEditor;
-    posdecorator.translateInnerWord(activeEditor,activeEOF);
+    posdecorator.translateInnerWord(activeEditor,activeEOL);
   });
   context.subscriptions.push(translateInnerDis);
 
@@ -109,11 +112,6 @@ export function deactivate() {
 }
 
 function updateActiveEof(){
-    let activeEditor = vscode.window.activeTextEditor;
-    let text = activeEditor.document.getText();
-    if(text.indexOf('\r\n') == -1){
-      activeEOF = '\n'
-    }else{
-      activeEOF = '\r\n'
-    }
+    let filesConfig = vscode.workspace.getConfiguration('files');
+    activeEOL = filesConfig['eol'];
 }
