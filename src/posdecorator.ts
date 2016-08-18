@@ -60,6 +60,9 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
 
     for (var i = 0; i < codeLines.length; i++) {
         let line = codeLines[i]
+        if(line.indexOf(' >') !== -1){
+            continue;
+        }
         let posList = getPosList(line);
             let posIndex = 0;
             for (let j = 0; j < posList.length; j++) {
