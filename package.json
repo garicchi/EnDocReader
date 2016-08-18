@@ -28,7 +28,7 @@
                 "title": "en: Inner Translate"
             },
             {
-                "command": "toggleJaFoldCommand", 
+                "command": "toggleJaFoldCommand",
                 "title": "en: Toggle Folding of Japanese"
             }
         ],
@@ -61,7 +61,7 @@
         "menus": {
             "editor/context": [
                 {
-                    "command": "formatCommand", 
+                    "command": "formatCommand",
                     "when": "editorHasSelection"
                 },
                 {
@@ -85,7 +85,7 @@
                     "when": "editorFocus"
                 },
                 {
-                    "command": "toggleJaFoldCommand", 
+                    "command": "toggleJaFoldCommand",
                     "when": "editorFocus"
                 }
             ]
@@ -113,5 +113,5 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
     },
-    "version": "1.1.0"
+    "version": "1.2.0"
 }
