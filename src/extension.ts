@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import * as textop from './textop';
 import * as posdecorator from './posdecorator';
 import * as st from './settings';
+import * as fs from 'fs';
 
 var toggleColoring = false;
 var activeEOF = null;
@@ -52,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
     let selectText = activeEditor.document.getText().slice(selectStart, selectEnd);
     let url = vscode.Uri.parse('https://translate.google.co.jp/?hl=ja&tab=wT#en/ja/' + selectText);
     if (selectText !== '') {
+      
       return vscode.commands.executeCommand('vscode.open', url).then((success) => {
       }, (reason) => {
         vscode.window.showErrorMessage(reason);
@@ -61,6 +63,31 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
   context.subscriptions.push(translateDis);
+
+  let weblioDis = vscode.commands.registerCommand('weblioCommand', () => {
+    let activeEditor = vscode.window.activeTextEditor;
+    let selectStart = activeEditor.document.offsetAt(activeEditor.selection.start);
+    let selectEnd = activeEditor.document.offsetAt(activeEditor.selection.end);
+    let selectText = activeEditor.document.getText().slice(selectStart, selectEnd);
+    let url = vscode.Uri.parse('http://ejje.weblio.jp/content/' + selectText);
+    if (selectText !== '') {
+      let previewPath = __dirname+'/../../previewWeblio.html';
+      let content = fs.readFileSync(previewPath, 'utf8');
+      content = content.replace(/src=.*" /g,'src="'+url+'" ');
+      fs.writeFileSync(previewPath,content,'utf-8');
+
+      let previewUri = vscode.Uri.parse('file://'+previewPath);
+      
+      return vscode.commands.executeCommand('vscode.previewHtml', previewUri,vscode.ViewColumn.Two,'Weblio').then((success) => {
+      }, (reason) => {
+        vscode.window.showErrorMessage(reason);
+      });
+    } else {
+      vscode.window.showInformationMessage('select you want to translate!');
+    }
+  });
+  context.subscriptions.push(weblioDis);
+
 
   let translateInnerDis = vscode.commands.registerCommand('innerTranslateCommand', () => {
     let activeEditor = vscode.window.activeTextEditor;

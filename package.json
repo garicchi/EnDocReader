@@ -29,6 +29,10 @@
         "title": "en: Google Translate"
       },
       {
+        "command": "weblioCommand",
+        "title": "en: Weblio Translate"
+      },
+      {
         "command": "innerTranslateCommand",
         "title": "en: Inner Translate"
       },{
