@@ -9,6 +9,7 @@ import * as path from 'path';
 var toggleColoring = false;
 var activeEOL = null;
 let rootDir = path.join(__dirname,'..','..');
+let config = vscode.workspace.getConfiguration('endocreader');
 
 export function activate(context: vscode.ExtensionContext) {
   posdecorator.loadPosData(path.join(rootDir,'posData.json'));
@@ -97,6 +98,19 @@ export function activate(context: vscode.ExtensionContext) {
     posdecorator.translateInnerWord(activeEditor,activeEOL);
   });
   context.subscriptions.push(translateInnerDis);
+
+  let insertEnDis = vscode.commands.registerCommand('insertEnCommand', () => {
+    let activeEditor = vscode.window.activeTextEditor;
+    let cursor = activeEditor.selection.active;
+    let startOfEnStr = config['startOfEnStr'];
+    let endOfEnStr = config['endOfEnStr'];
+    
+    let block = activeEOL + startOfEnStr+activeEOL+activeEOL+endOfEnStr;
+    activeEditor.edit((builder)=>{
+      builder.insert(cursor,block);
+    });
+  });
+  context.subscriptions.push(insertEnDis);
 }
 
 // this method is called when your extension is deactivated
