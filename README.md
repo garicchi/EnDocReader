@@ -36,7 +36,7 @@ VS CodeのExtensionから**endocreader**と検索、インストール、有効�
 
 トグル機能なのでもう一度コマンドを使えば色は元に戻ります
 
-どの品詞がどの色かは[posData.json](./posdata.json)をみてください
+どの品詞がどの色かは[posData.json](https://github.com/garicchi/EnDocReader/blob/master/posData.json)をみてください
 
 使い方は右クリックから<code>en: Toggle Coloring</code>と入力します
 
