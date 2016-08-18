@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 let config = vscode.workspace.getConfiguration('endocreader');
 
 
-export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:string) {
+export function getSplitLine(text: string,endOfLine:string) {
 
   var lines = text.split(endOfLine);
   var active = false;
@@ -12,11 +12,25 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:str
   var buffLine = '';
   let startOfEnStr = config['startOfEnStr'];
   let endOfEnStr = config['endOfEnStr'];
+  let japaneseLineNum = config['japaneseLineNum'];
+  let eolStr = endOfLine;
+  
+  for(let i = 0;i<japaneseLineNum;i++){
+    if(i < japaneseLineNum -1){
+      eolStr+=' > '+endOfLine;
+    }else{
+      eolStr+= endOfLine;
+    }
+  }
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    if (line.indexOf(endOfEnStr) !== -1 && lines.indexOf(startOfEnStr) === -1) {
+    if (line.indexOf(endOfEnStr) !== -1 && line.indexOf(startOfEnStr) === -1) {
       active = false;
+    }
+    if(line.startsWith(' > ')||line === endOfLine){
+      newLines.push(line);
+      continue;
     }
     if (active) {
       if (!line.endsWith('.')) {
@@ -41,20 +55,11 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:str
         }
 
         if (insertNewLine) {
-          currentLine += endOfLine;
-          if (isWhiteLineAdd) {
-            currentLine += endOfLine
-          }
+          newLines.push(currentLine);
+          currentLine = '';
         }
       }
-      if (isWhiteLineAdd) {
-        if ((buffLine.length - 1) >= (i + 1)) {
-          if (buffLine[i] !== '' && buffLine[i + 1] !== '') {
-            currentLine += endOfLine
-          }
-        }
-      }
-      currentLine = currentLine.split(endOfLine+' ').join(endOfLine);
+      
       newLines.push(currentLine);
       buffLine = '';
     } else {
@@ -69,5 +74,41 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:str
     newLines.push(buffLine);
     buffLine = '';
   }
-  return newLines.join(endOfLine);
+
+  for(let i = 0;i<newLines.length;i++){
+    if(newLines[i].startsWith(' ')&&newLines[i].indexOf(' > ') === -1){
+      newLines[i] = newLines[i].substr(1);
+    }
+  }
+  
+  let newText = "";
+  active = false;
+  for(let i = 0;i<newLines.length;i++){
+    let line = newLines[i];
+    if (line.indexOf(endOfEnStr) !== -1 && line.indexOf(startOfEnStr) === -1) {
+      active = false;
+    }
+    
+    if (active) {
+      if(line.startsWith(' > ')){
+        newText += newLines[i] + endOfLine+endOfLine;
+      }else{
+        if(newLines[i+1].indexOf(' > ') !== -1){
+          newText += newLines[i] + endOfLine;
+        }else{   
+          newText += newLines[i]+eolStr;
+        }
+      }
+      
+    }else{
+      newText += newLines[i] + endOfLine;
+    }
+
+    if (line.indexOf(startOfEnStr) !== -1) {
+      active = true;
+      newText += endOfLine+endOfLine;
+    }
+
+  }
+  return newText;
 }

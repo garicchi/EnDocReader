@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
     updateActiveEof();
     let activeEditor = vscode.window.activeTextEditor;
     let text = activeEditor.document.getText();
-    let split = textop.getSplitLine(text, true,activeEOL);
+    let split = textop.getSplitLine(text,activeEOL);
 
     activeEditor.edit((builder) => {
       let startPos = activeEditor.document.positionAt(0);

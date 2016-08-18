@@ -44,18 +44,23 @@
             }, 
             "endocreader.startOfEnStr":{
               "type":"string",
-              "default":"$$$en",
+              "default":":::en",
               "description":"Special string for starting english senteces"
             }, 
             "endocreader.endOfEnStr":{
               "type":"string",
-              "default":"$$$",
+              "default":":::",
               "description":"Special string for ending english sentences"
             },
             "endocreader.innerTransColor":{
               "type":"string",
               "default":"#878787",
               "description":"The color of word in inner translate function"
+            },
+            "endocreader.japaneseLineNum":{
+              "type":"number",
+              "default":2,
+              "description":"The number of japanese line under english sentence"
             }
           }
             

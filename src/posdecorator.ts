@@ -168,7 +168,7 @@ export function translateInnerWord(activeEditor: vscode.TextEditor, endOfLine: s
         btTranslator.translate(selectText, 'en', 'ja', function (err, res) {
             let text = res.translated_text;
             if (text !== '') {
-                let sentence = '[ ' + selectText + ' : ' + text + ' ]' + endOfLine
+                let sentence = ' > [ ' + selectText + ' : ' + text + ' ]  ' + endOfLine
                 let wordStart = new vscode.Position(startPos.line + 1, 0);
                 let wordEnd = new vscode.Position(startPos.line + 1, sentence.length - 1);
                 activeEditor.edit((builder) => {
