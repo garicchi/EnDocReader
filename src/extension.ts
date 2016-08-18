@@ -5,9 +5,11 @@ import * as textop from './textop';
 import * as posdecorator from './posdecorator';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as editorop from './editorop';
 
-var toggleColoring = false;
-var activeEOL = null;
+let toggleColoring = false;
+let toggleFolding = false;
+let activeEOL = null;
 let rootDir = path.join(__dirname,'..','..');
 let config = vscode.workspace.getConfiguration('endocreader');
 
@@ -24,17 +26,16 @@ export function activate(context: vscode.ExtensionContext) {
   let formatDis = vscode.commands.registerCommand('formatCommand', () => {
     updateActiveEof();
     let activeEditor = vscode.window.activeTextEditor;
-    let text = activeEditor.document.getText();
-    let split = textop.getSplitLine(text,activeEOL);
-
-    activeEditor.edit((builder) => {
-      let startPos = activeEditor.document.positionAt(0);
-      let endPos = activeEditor.document.positionAt(text.length);
-      let allRange = new vscode.Range(startPos, endPos);
-      builder.replace(allRange, split);
-    });
-
-    vscode.window.setStatusBarMessage('format english done!');
+    let selected = editorop.EditorSelection.getSelectedItem(activeEditor);
+    if(selected.isSelected){
+      let newText = textop.formatSelectedText(selected,activeEOL);
+      activeEditor.edit((builder) => {
+        builder.replace(selected.range, newText);
+      });
+    }else{
+      vscode.window.showErrorMessage('please select text');
+    }
+    vscode.window.setStatusBarMessage('format english done!',2000);
   });
   context.subscriptions.push(formatDis);
 
@@ -46,35 +47,36 @@ export function activate(context: vscode.ExtensionContext) {
     let text = activeEditor.document.getText();
 
     posdecorator.decoratePartOfSpeech(text, activeEditor, toggleColoring,activeEOL);
-
+    if(toggleColoring){
+      vscode.window.setStatusBarMessage('colorful mode!',2000);
+    }else{
+      vscode.window.setStatusBarMessage('no color mode!',2000);
+    }
   });
   context.subscriptions.push(coloringDis);
 
   let translateDis = vscode.commands.registerCommand('googleTranslateCommand', () => {
+    
     let activeEditor = vscode.window.activeTextEditor;
-    let selectStart = activeEditor.document.offsetAt(activeEditor.selection.start);
-    let selectEnd = activeEditor.document.offsetAt(activeEditor.selection.end);
-    let selectText = activeEditor.document.getText().slice(selectStart, selectEnd);
-    let url = vscode.Uri.parse('https://translate.google.co.jp/?hl=ja&tab=wT#en/ja/' + selectText);
-    if (selectText !== '') {
-      
+    let selected = editorop.EditorSelection.getSelectedItem(activeEditor);
+    let url = vscode.Uri.parse('https://translate.google.co.jp/?hl=ja&tab=wT#en/ja/' + selected.text);
+    if(selected.isSelected){
       return vscode.commands.executeCommand('vscode.open', url).then((success) => {
       }, (reason) => {
         vscode.window.showErrorMessage(reason);
       });
-    } else {
-      vscode.window.showInformationMessage('select you want to translate!');
+    }else{
+      vscode.window.showErrorMessage('please select text');
     }
   });
   context.subscriptions.push(translateDis);
 
   let weblioDis = vscode.commands.registerCommand('weblioCommand', () => {
+    
     let activeEditor = vscode.window.activeTextEditor;
-    let selectStart = activeEditor.document.offsetAt(activeEditor.selection.start);
-    let selectEnd = activeEditor.document.offsetAt(activeEditor.selection.end);
-    let selectText = activeEditor.document.getText().slice(selectStart, selectEnd);
-    let url = vscode.Uri.parse('http://ejje.weblio.jp/content/' + selectText);
-    if (selectText !== '') {
+    let selected = editorop.EditorSelection.getSelectedItem(activeEditor);
+    let url = vscode.Uri.parse('http://ejje.weblio.jp/content/' + selected.text);
+    if(selected.isSelected){
       let previewPath = path.join(rootDir,'previewWeblio.html');
       let content = fs.readFileSync(previewPath, 'utf8');
       content = content.replace(/src=.*" /g,'src="'+url+'" ');
@@ -86,8 +88,8 @@ export function activate(context: vscode.ExtensionContext) {
       }, (reason) => {
         vscode.window.showErrorMessage(reason);
       });
-    } else {
-      vscode.window.showInformationMessage('select you want to translate!');
+    }else{
+      vscode.window.showErrorMessage('please select text');
     }
   });
   context.subscriptions.push(weblioDis);
@@ -99,18 +101,23 @@ export function activate(context: vscode.ExtensionContext) {
   });
   context.subscriptions.push(translateInnerDis);
 
-  let insertEnDis = vscode.commands.registerCommand('insertEnCommand', () => {
-    let activeEditor = vscode.window.activeTextEditor;
-    let cursor = activeEditor.selection.active;
-    let startOfEnStr = config['startOfEnStr'];
-    let endOfEnStr = config['endOfEnStr'];
-    
-    let block = activeEOL + startOfEnStr+activeEOL+activeEOL+endOfEnStr;
-    activeEditor.edit((builder)=>{
-      builder.insert(cursor,block);
-    });
+  let foldingDis = vscode.commands.registerCommand('toggleJaFoldCommand', () => {
+    toggleFolding = !toggleFolding;
+    if(toggleFolding){
+      return vscode.commands.executeCommand('editor.foldAll').then((success) => {
+      }, (reason) => {
+        vscode.window.showErrorMessage(reason);
+      });
+    }else{
+      return vscode.commands.executeCommand('editor.unfoldAll').then((success) => {
+      }, (reason) => {
+        vscode.window.showErrorMessage(reason);
+      });
+    }
+     
   });
-  context.subscriptions.push(insertEnDis);
+  context.subscriptions.push(foldingDis);
+
 }
 
 // this method is called when your extension is deactivated

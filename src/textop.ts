@@ -1,17 +1,15 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as editorop from './editorop';
 let config = vscode.workspace.getConfiguration('endocreader');
 
 
-export function getSplitLine(text: string,endOfLine:string) {
+export function formatSelectedText(selected:editorop.EditorSelection,endOfLine:string) {
 
-  var lines = text.split(endOfLine);
-  var active = false;
+  var lines = selected.text.split(endOfLine);
   var newLines = Array();
   var buffLine = '';
-  let startOfEnStr = config['startOfEnStr'];
-  let endOfEnStr = config['endOfEnStr'];
   let japaneseLineNum = config['japaneseLineNum'];
   let eolStr = endOfLine;
   
@@ -25,15 +23,12 @@ export function getSplitLine(text: string,endOfLine:string) {
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    if (line.indexOf(endOfEnStr) !== -1 && line.indexOf(startOfEnStr) === -1) {
-      active = false;
-    }
-    if(line.startsWith(' > ')||line === endOfLine){
+    
+    if(line.startsWith(' >')||line === endOfLine){
       newLines.push(line);
       continue;
     }
-    if (active) {
-      if (!line.endsWith('.')) {
+    if (!line.endsWith('.')) {
         buffLine += line;
         continue;
       } else {
@@ -62,13 +57,6 @@ export function getSplitLine(text: string,endOfLine:string) {
       
       newLines.push(currentLine);
       buffLine = '';
-    } else {
-      newLines.push(line);
-    }
-
-    if (line.indexOf(startOfEnStr) !== -1) {
-      active = true;
-    }
   }
   if (buffLine !== '') {
     newLines.push(buffLine);
@@ -76,39 +64,21 @@ export function getSplitLine(text: string,endOfLine:string) {
   }
 
   for(let i = 0;i<newLines.length;i++){
-    if(newLines[i].startsWith(' ')&&newLines[i].indexOf(' > ') === -1){
+    if(newLines[i].startsWith(' ')&&newLines[i].indexOf(' >') === -1){
       newLines[i] = newLines[i].substr(1);
     }
   }
   
   let newText = "";
-  active = false;
   for(let i = 0;i<newLines.length;i++){
     let line = newLines[i];
-    if (line.indexOf(endOfEnStr) !== -1 && line.indexOf(startOfEnStr) === -1) {
-      active = false;
-    }
-    
-    if (active) {
-      if(line.startsWith(' > ')){
+    if(line.startsWith(' >')){
         newText += newLines[i] + endOfLine+endOfLine;
       }else{
-        if(newLines[i+1].indexOf(' > ') !== -1){
-          newText += newLines[i] + endOfLine;
-        }else{   
-          newText += newLines[i]+eolStr;
-        }
-      }
-      
-    }else{
-      newText += newLines[i] + endOfLine;
-    }
-
-    if (line.indexOf(startOfEnStr) !== -1) {
-      active = true;
-      newText += endOfLine+endOfLine;
+        newText += newLines[i]+eolStr;
     }
 
   }
+  newText = endOfLine + newText;
   return newText;
 }
