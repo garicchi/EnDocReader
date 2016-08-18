@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     updateActiveEof();
   });
   posdecorator.initBingTranslator();
-  
+
   let formatDis = vscode.commands.registerCommand('formatCommand', () => {
     let activeEditor = vscode.window.activeTextEditor;
     let text = activeEditor.document.getText();
@@ -67,6 +67,13 @@ export function activate(context: vscode.ExtensionContext) {
     posdecorator.translateInnerWord(activeEditor,activeEOF);
   });
   context.subscriptions.push(translateInnerDis);
+
+  let settingsDis = vscode.commands.registerCommand('settingsCommand', () => {
+    vscode.workspace.openTextDocument(st.Settings.settingPath).then(doc=>{
+      vscode.window.showTextDocument(doc,vscode.window.activeTextEditor.viewColumn+1)
+    });
+  });
+  context.subscriptions.push(settingsDis);
 
 }
 
