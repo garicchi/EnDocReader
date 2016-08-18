@@ -1,0 +1,248 @@
+[
+    {
+        "color": "#00a7db", 
+        "name": "名詞", 
+        "tags": [
+            {
+                "example": "dog", 
+                "name": "名詞の単数形または不可算名詞", 
+                "tag": "NN"
+            }, 
+            {
+                "example": "dogs", 
+                "name": "名詞の複数形", 
+                "tag": "NNS"
+            }, 
+            {
+                "example": "John", 
+                "name": "固有名詞の単数形", 
+                "tag": "NNP"
+            }, 
+            {
+                "example": "Vikings", 
+                "name": "固有名詞の複数形", 
+                "tag": "NNPS"
+            }
+        ]
+    }, 
+    {
+        "color": "#0078ba", 
+        "name": "代名詞", 
+        "tags": [
+            {
+                "example": "my,one's", 
+                "name": "所有代名詞", 
+                "tag": "PP$"
+            }, 
+            {
+                "example": "I,you,she", 
+                "name": "人称代名詞", 
+                "tag": "PRP"
+            }
+        ]
+    }, 
+    {
+        "color": "#f39700", 
+        "name": "動詞", 
+        "tags": [
+            {
+                "example": "can,should", 
+                "name": "法助動詞", 
+                "tag": "MD"
+            }, 
+            {
+                "example": "eat", 
+                "name": "動詞(原型)", 
+                "tag": "VB"
+            }, 
+            {
+                "example": "ate", 
+                "name": "動詞(過去形)", 
+                "tag": "VBD"
+            }, 
+            {
+                "example": "eating", 
+                "name": "動詞(現在進行系)", 
+                "tag": "VBG"
+            }, 
+            {
+                "example": "eaten", 
+                "name": "動詞(過去分詞)", 
+                "tag": "VBN"
+            }, 
+            {
+                "example": "eat", 
+                "name": "動詞(三人称単数現在以外)", 
+                "tag": "VBP"
+            }, 
+            {
+                "example": "eats", 
+                "name": "動詞(三人称単数現在)", 
+                "tag": "VBZ"
+            }
+        ]
+    }, 
+    {
+        "color": "#6cbb5a", 
+        "name": "形容詞", 
+        "tags": [
+            {
+                "example": "one,two", 
+                "name": "基数詞", 
+                "tag": "CD"
+            }, 
+            {
+                "example": "big", 
+                "name": "形容詞", 
+                "tag": "JJ"
+            }, 
+            {
+                "example": "bigger", 
+                "name": "比較級形容詞", 
+                "tag": "JJR"
+            }, 
+            {
+                "example": "biggest", 
+                "name": "最大級形容詞", 
+                "tag": "JJS"
+            }, 
+            {
+                "example": "mike's", 
+                "name": "所有格の's", 
+                "tag": "POS"
+            }
+        ]
+    }, 
+    {
+        "color": "#00ada9", 
+        "name": "副詞", 
+        "tags": [
+            {
+                "example": "there", 
+                "name": "存在there公文", 
+                "tag": "EX"
+            }, 
+            {
+                "example": "quickly", 
+                "name": "副詞", 
+                "tag": "RB"
+            }, 
+            {
+                "example": "faster", 
+                "name": "比較級副詞", 
+                "tag": "RBR"
+            }, 
+            {
+                "example": "fastest", 
+                "name": "最大級副詞", 
+                "tag": "RBS"
+            }
+        ]
+    }, 
+    {
+        "color": "#009944", 
+        "name": "前置詞", 
+        "tags": [
+            {
+                "example": "of,in,by", 
+                "name": "前置詞", 
+                "tag": "IN"
+            }, 
+            {
+                "example": "up off", 
+                "name": "不変化詞", 
+                "tag": "RP"
+            }, 
+            {
+                "example": "to", 
+                "name": "不定詞のto", 
+                "tag": "TO"
+            }
+        ]
+    }, 
+    {
+        "color": "#e85298", 
+        "name": "接続詞", 
+        "tags": [
+            {
+                "example": "and,but,or", 
+                "name": "等位接続詞", 
+                "tag": "CC"
+            }
+        ]
+    }, 
+    {
+        "color": "#ba6959", 
+        "name": "間投詞", 
+        "tags": [
+            {
+                "example": "oh, oops", 
+                "name": "間投詞", 
+                "tag": "UH"
+            }
+        ]
+    }, 
+    {
+        "color": "#9b7cb6", 
+        "name": "限定詞", 
+        "tags": [
+            {
+                "example": "the,some", 
+                "name": "限定詞", 
+                "tag": "DT"
+            }, 
+            {
+                "example": "all, both", 
+                "name": "前限定辞", 
+                "tag": "PDT"
+            }
+        ]
+    }, 
+    {
+        "color": "#e5171f", 
+        "name": "関係詞", 
+        "tags": [
+            {
+                "example": "which,that", 
+                "name": "Wh-限定詞", 
+                "tag": "WDT"
+            }, 
+            {
+                "example": "who,what", 
+                "name": "Wh-代名詞", 
+                "tag": "WP"
+            }, 
+            {
+                "example": "whose", 
+                "name": "Wh-所有格", 
+                "tag": "WP$"
+            }, 
+            {
+                "example": "how,where", 
+                "name": "Wh-副詞", 
+                "tag": "WRB"
+            }
+        ]
+    }, 
+    {
+        "color": "", 
+        "name": "その他", 
+        "tags": [
+            {
+                "example": "mon dieu", 
+                "name": "外国語", 
+                "tag": "FW"
+            }, 
+            {
+                "example": "(1),(2)", 
+                "name": "リストマーカー", 
+                "tag": "LS"
+            }, 
+            {
+                "example": "+,%,&", 
+                "name": "シンボル", 
+                "tag": "SYM"
+            }
+        ]
+    }
+]

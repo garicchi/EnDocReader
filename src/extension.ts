@@ -3,7 +3,6 @@
 import * as vscode from 'vscode';
 import * as textop from './textop';
 import * as posdecorator from './posdecorator';
-import * as st from './settings';
 import * as fs from 'fs';
 
 var toggleColoring = false;
@@ -11,7 +10,7 @@ var activeEOL = null;
 
 
 export function activate(context: vscode.ExtensionContext) {
-  st.Settings.load(__dirname + '/../../settings.json');
+  posdecorator.loadPosData(__dirname+'/../../posData.json');
   updateActiveEof();
 
   vscode.window.onDidChangeActiveTextEditor(function(){
@@ -97,14 +96,6 @@ export function activate(context: vscode.ExtensionContext) {
     posdecorator.translateInnerWord(activeEditor,activeEOL);
   });
   context.subscriptions.push(translateInnerDis);
-
-  let settingsDis = vscode.commands.registerCommand('settingsCommand', () => {
-    vscode.workspace.openTextDocument(st.Settings.settingPath).then(doc=>{
-      vscode.window.showTextDocument(doc,vscode.window.activeTextEditor.viewColumn+1)
-    });
-  });
-  context.subscriptions.push(settingsDis);
-
 }
 
 // this method is called when your extension is deactivated

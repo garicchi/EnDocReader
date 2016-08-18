@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import * as st from './settings';
+import * as fs from 'fs';
 
 let pos = require('pos');
 let bt = require('bing-translate');
@@ -9,6 +9,9 @@ let btTranslator = null;
 
 let transWordStyleList: vscode.TextEditorDecorationType[] = [];
 let posStyleList = [];
+let posData = null;
+
+let config = vscode.workspace.getConfiguration('endocreader');
 
 
 class PosInfo {
@@ -18,6 +21,10 @@ class PosInfo {
     describe: any;
 }
 
+export function loadPosData(dataPath:string){
+    let jsonFile = fs.readFileSync(dataPath, 'utf8');
+    posData = JSON.parse(jsonFile);
+}
 
 export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEditor, isDecorate: boolean, endOfLine: string) {
 
@@ -25,11 +32,10 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
     let active = false;
 
     let posInfoList: PosInfo[] = [];
-    let startOfEnStr = st.Settings.getSetting('startOfEnStr');
-    let endOfEnStr = st.Settings.getSetting('endOfEnStr');
+    let startOfEnStr = config['startOfEnStr'];
+    let endOfEnStr = config['endOfEnStr'];
 
     if (isDecorate) {
-        let posData = st.Settings.getSetting('posData');
         for (let i = 0; i < posData.length; i++) {
             let bigPos = posData[i].tags;
             for (let j = 0; j < bigPos.length; j++) {
@@ -142,8 +148,8 @@ export function getPosDescribe(posName: string, posstyleJson: any) {
 }
 
 export function initBingTranslator() {
-    let id = st.Settings.getSetting('bingTransId');
-    let secret = st.Settings.getSetting('bingTransSecret');
+    let id = config['bingTransId'];
+    let secret = config['bingTransSecret'];
     btTranslator = bt.init({
         client_id: id,
         client_secret: secret
@@ -170,7 +176,7 @@ export function translateInnerWord(activeEditor: vscode.TextEditor, endOfLine: s
                     builder.insert(wordStart, sentence);
                 });
                 let transWordStyle = vscode.window.createTextEditorDecorationType({
-                    color: st.Settings.getSetting('innerTransColor')
+                    color: config['innerTransColor']
                 });
                 transWordStyleList.push(transWordStyle);
                 activeEditor.setDecorations(transWordStyle, [{ range: new vscode.Range(wordStart, wordEnd), hoverMessage: null }]);

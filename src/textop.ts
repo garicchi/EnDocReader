@@ -1,7 +1,8 @@
 'use strict';
 
+import * as vscode from 'vscode';
+let config = vscode.workspace.getConfiguration('endocreader');
 
-import * as st from './settings';
 
 export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:string) {
 
@@ -9,8 +10,8 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:str
   var active = false;
   var newLines = Array();
   var buffLine = '';
-  let startOfEnStr = st.Settings.getSetting('startOfEnStr');
-  let endOfEnStr = st.Settings.getSetting('endOfEnStr');
+  let startOfEnStr = config['startOfEnStr'];
+  let endOfEnStr = config['endOfEnStr'];
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];

@@ -1,58 +1,87 @@
 {
-  "name": "endocreader",
-  "displayName": "EnDocReader",
-  "description": "extenstion for english document reading",
-  "version": "1.0.0",
-  "publisher": "garicchi",
-  "engines": {
-    "vscode": "^1.0.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "toggleColorCommand",
-        "title": "en: Toggle Coloring"
-      },
-      {
-        "command": "formatCommand",
-        "title": "en: Format Line"
-      },
-      {
-        "command": "googleTranslateCommand",
-        "title": "en: Google Translate"
-      },
-      {
-        "command": "weblioCommand",
-        "title": "en: Weblio Translate"
-      },
-      {
-        "command": "innerTranslateCommand",
-        "title": "en: Inner Translate"
-      },{
-        "command": "settingsCommand",
-        "title": "en: Show Settings"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "typescript": "^1.8.5",
-    "vscode": "^0.11.0"
-  },
-  "dependencies": {
-    "bing-translate": "0.0.2",
-    "googleapis": "^12.3.0",
-    "pos": "^0.3.0"
-  }
+    "activationEvents": [
+        "*"
+    ], 
+    "categories": [
+        "Other"
+    ], 
+    "contributes": {
+        "commands": [
+            {
+                "command": "toggleColorCommand", 
+                "title": "en: Toggle Coloring"
+            }, 
+            {
+                "command": "formatCommand", 
+                "title": "en: Format Line"
+            }, 
+            {
+                "command": "googleTranslateCommand", 
+                "title": "en: Google Translate"
+            }, 
+            {
+                "command": "weblioCommand", 
+                "title": "en: Weblio Translate"
+            }, 
+            {
+                "command": "innerTranslateCommand", 
+                "title": "en: Inner Translate"
+            }
+        ], 
+        "configuration": {
+          "type":"object",
+          "title":"EnDocReader Configuration",
+          "properties":{
+            "endocreader.bingTransId":{
+              "type":"string",
+              "default":"endocreader",
+              "description":"Your client id for bing translater api"
+            },
+            "endocreader.bingTransSecret":{
+              "type":"string",
+              "default":"TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=",
+              "description":"Your client secret for bing translater api"
+            }, 
+            "endocreader.startOfEnStr":{
+              "type":"string",
+              "default":"$$$en",
+              "description":"Special string for starting english senteces"
+            }, 
+            "endocreader.endOfEnStr":{
+              "type":"string",
+              "default":"$$$",
+              "description":"Special string for ending english sentences"
+            },
+            "endocreader.innerTransColor":{
+              "type":"string",
+              "default":"#878787",
+              "description":"The color of word in inner translate function"
+            }
+          }
+            
+        }
+    }, 
+    "dependencies": {
+        "bing-translate": "0.0.2", 
+        "googleapis": "^12.3.0", 
+        "pos": "^0.3.0"
+    }, 
+    "description": "extenstion for english document reading", 
+    "devDependencies": {
+        "typescript": "^1.8.5", 
+        "vscode": "^0.11.0"
+    }, 
+    "displayName": "EnDocReader", 
+    "engines": {
+        "vscode": "^1.0.0"
+    }, 
+    "main": "./out/src/extension", 
+    "name": "endocreader", 
+    "publisher": "garicchi", 
+    "scripts": {
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./", 
+        "postinstall": "node ./node_modules/vscode/bin/install", 
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
+    }, 
+    "version": "1.0.0"
 }
