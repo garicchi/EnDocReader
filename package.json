@@ -26,6 +26,10 @@
             {
                 "command": "innerTranslateCommand", 
                 "title": "en: Inner Translate"
+            }, 
+            {
+                "command": "toggleJaFoldCommand", 
+                "title": "en: Toggle Folding of Japanese"
             }
         ], 
         "configuration": {
@@ -78,6 +82,10 @@
                 },
                 {
                     "command": "markdown.showPreview", 
+                    "when": "editorFocus"
+                },
+                {
+                    "command": "toggleJaFoldCommand", 
                     "when": "editorFocus"
                 }
             ]

@@ -7,8 +7,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as editorop from './editorop';
 
-var toggleColoring = false;
-var activeEOL = null;
+let toggleColoring = false;
+let toggleFolding = false;
+let activeEOL = null;
 let rootDir = path.join(__dirname,'..','..');
 let config = vscode.workspace.getConfiguration('endocreader');
 
@@ -99,6 +100,23 @@ export function activate(context: vscode.ExtensionContext) {
     posdecorator.translateInnerWord(activeEditor,activeEOL);
   });
   context.subscriptions.push(translateInnerDis);
+
+  let foldingDis = vscode.commands.registerCommand('toggleJaFoldCommand', () => {
+    toggleFolding = !toggleFolding;
+    if(toggleFolding){
+      return vscode.commands.executeCommand('editor.foldAll').then((success) => {
+      }, (reason) => {
+        vscode.window.showErrorMessage(reason);
+      });
+    }else{
+      return vscode.commands.executeCommand('editor.unfoldAll').then((success) => {
+      }, (reason) => {
+        vscode.window.showErrorMessage(reason);
+      });
+    }
+     
+  });
+  context.subscriptions.push(foldingDis);
 
 }
 
