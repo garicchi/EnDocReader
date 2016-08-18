@@ -15,13 +15,11 @@ class PosInfo {
     startPos: vscode.Position;
     endPos: vscode.Position;
     word: string;
-    pos: string;
-    ja: string;
-    color: string;
+    describe: any;
 }
 
 
-export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEditor, isDecorate: boolean,endOfLine:string) {
+export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEditor, isDecorate: boolean, endOfLine: string) {
 
     let codeLines = text.split(endOfLine);
     let active = false;
@@ -30,11 +28,30 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
     let startOfEnStr = st.Settings.getSetting('startOfEnStr');
     let endOfEnStr = st.Settings.getSetting('endOfEnStr');
 
-    posStyleList = st.Settings.getSetting('posData');
-    for (let i = 0; i < posStyleList.length; i++) {
-        posStyleList[i].decoration = vscode.window.createTextEditorDecorationType({
-            color: posStyleList[i].color
-        });
+    if (isDecorate) {
+        let posData = st.Settings.getSetting('posData');
+        for (let i = 0; i < posData.length; i++) {
+            let bigPos = posData[i].tags;
+            for (let j = 0; j < bigPos.length; j++) {
+                let color = posData[i].color;
+                let decoration = null;
+                if (color == '') {
+                    decoration = vscode.window.createTextEditorDecorationType({
+                    });
+                } else {
+                    decoration = vscode.window.createTextEditorDecorationType({
+                        color: posData[i].color
+                    });
+                }
+
+                let posObj = bigPos[j];
+                posObj.category = posData[i].name;
+                posObj.color = posData[i].color;
+                posObj.decoration = decoration;
+                posStyleList.push(posObj);
+            }
+
+        }
     }
 
     for (var i = 0; i < codeLines.length; i++) {
@@ -48,18 +65,15 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
             let posIndex = 0;
             for (let j = 0; j < posList.length; j++) {
                 let posItem = posList[j];
-                let describe = getPosDescribe(posItem.pos, posStyleList);
+                let describe = getPosDescribe(posItem.tag, posStyleList);
                 let index = line.indexOf(posItem.word, posIndex);
                 if (describe != null) {
-
 
                     let posInfo = new PosInfo();
                     posInfo.startPos = new vscode.Position(i, index);
                     posInfo.endPos = new vscode.Position(i, index + posItem.word.length);
                     posInfo.word = posItem.word;
-                    posInfo.pos = posItem.pos;
-                    posInfo.ja = describe.ja;
-                    posInfo.color = describe.color;
+                    posInfo.describe = describe;
 
                     posInfoList.push(posInfo);
                 }
@@ -90,8 +104,9 @@ export function getDecorateOptions(posdescribe: any, posInfoList: PosInfo[]) {
     let options: vscode.DecorationOptions[] = [];
     for (let i = 0; i < posInfoList.length; i++) {
         let info = posInfoList[i];
-        if (info.pos === posdescribe.name) {
-            var decoration = { range: new vscode.Range(info.startPos, info.endPos), hoverMessage: info.pos + ' **' + info.ja + '**' };
+        if (info.describe.tag === posdescribe.tag) {
+            let message = '【 ' + info.describe.name + ' 】\ncategory: ' + info.describe.category + '\nexample: ' + info.describe.example;
+            var decoration = { range: new vscode.Range(info.startPos, info.endPos), hoverMessage: message };
             options.push(decoration);
 
         }
@@ -108,42 +123,9 @@ export function getPosList(line) {
 
     for (let j in taggedWords) {
         var taggedWord = taggedWords[j];
-        var word = taggedWord[0];
-        var tag = taggedWord[1];
-        //parse
-        //noun
-        var selectPos = null;
-        if (tag === "NN" || tag === "NNP" || tag === "NNPS"
-            || tag === "NNS" || tag === "PRP" || tag == "PRP$" || tag === "EX") {
-            selectPos = 'noun';
-
-            //adjective
-        } else if (tag === "JJ" || tag === "JJR" || tag === "JJS") {
-            selectPos = 'adjective';
-            //adverb
-        } else if (tag === "RB" || tag === "RBR" || tag === "RBS") {
-            selectPos = 'adverb';
-        }   //verb
-        else if (tag === "VB" || tag === "VBD" || tag === "VBG" || tag === "VBN"
-            || tag === "VBP" || tag === "VBZ") {
-            selectPos = 'verb';
-        }   //auxiliaryVerb
-        else if (tag === "MD") {
-            selectPos = 'auxiliaryVerb';
-            //relative
-        } else if (tag === "WDT" || tag === "WP" || tag === "WP$" || tag === "WRB") {
-            selectPos = 'relative';
-            //conjunction
-        } else if (tag === "IN" || tag === "CC") {
-            selectPos = 'conjunction';
-            //determiner
-        } else if (tag === "DT") {
-            selectPos = 'determiner';
-        }
-
         posList.push({
-            word: word,
-            pos: selectPos
+            word: taggedWord[0],
+            tag: taggedWord[1]
         });
     }
 
@@ -152,14 +134,14 @@ export function getPosList(line) {
 
 export function getPosDescribe(posName: string, posstyleJson: any) {
     for (let i = 0; i < posstyleJson.length; i++) {
-        if (posstyleJson[i].name === posName) {
+        if (posstyleJson[i].tag === posName) {
             return posstyleJson[i];
         }
     }
     return null;
 }
 
-export function initBingTranslator(){
+export function initBingTranslator() {
     let id = st.Settings.getSetting('bingTransId');
     let secret = st.Settings.getSetting('bingTransSecret');
     btTranslator = bt.init({
@@ -169,7 +151,7 @@ export function initBingTranslator(){
 
 }
 
-export function translateInnerWord(activeEditor: vscode.TextEditor,endOfLine:string) {
+export function translateInnerWord(activeEditor: vscode.TextEditor, endOfLine: string) {
     let startPos = activeEditor.selection.start;
     let endPos = activeEditor.selection.end;
     let selectStart = activeEditor.document.offsetAt(startPos);
@@ -180,7 +162,7 @@ export function translateInnerWord(activeEditor: vscode.TextEditor,endOfLine:str
         btTranslator.translate(selectText, 'en', 'ja', function (err, res) {
             let text = res.translated_text;
             if (text !== '') {
-                let sentence = '[ ' + selectText + ' : ' + text + ' ]'+endOfLine
+                let sentence = '[ ' + selectText + ' : ' + text + ' ]' + endOfLine
                 let wordStart = new vscode.Position(startPos.line + 1, 0);
                 let wordEnd = new vscode.Position(startPos.line + 1, sentence.length - 1);
                 activeEditor.edit((builder) => {
