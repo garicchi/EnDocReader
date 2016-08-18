@@ -1,14 +1,11 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import * as fs from 'fs';
+import * as st from './settings';
 
 let pos = require('pos');
-var bt = require('bing-translate').init({
-    client_id: 'endocreader',
-    client_secret: 'TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk='
-});
-
+let bt = require('bing-translate');
+let btTranslator = null;
 
 let transWordStyleList: vscode.TextEditorDecorationType[] = [];
 let posStyleList = [];
@@ -23,16 +20,6 @@ class PosInfo {
     color: string;
 }
 
-export function loadPosJson(jsonPath: string) {
-    let jsonFile = fs.readFileSync(jsonPath, 'utf8')
-    posStyleList = JSON.parse(jsonFile);
-
-    for (let i = 0; i < posStyleList.length; i++) {
-        posStyleList[i].decoration = vscode.window.createTextEditorDecorationType({
-            color: posStyleList[i].color
-        });
-    }
-}
 
 export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEditor, isDecorate: boolean,endOfLine:string) {
 
@@ -40,10 +27,19 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
     let active = false;
 
     let posInfoList: PosInfo[] = [];
+    let startOfEnStr = st.Settings.getSetting('startOfEnStr');
+    let endOfEnStr = st.Settings.getSetting('endOfEnStr');
+
+    posStyleList = st.Settings.getSetting('posData');
+    for (let i = 0; i < posStyleList.length; i++) {
+        posStyleList[i].decoration = vscode.window.createTextEditorDecorationType({
+            color: posStyleList[i].color
+        });
+    }
 
     for (var i = 0; i < codeLines.length; i++) {
         let line = codeLines[i]
-        if (line.indexOf('```') !== -1 && line.indexOf('```en') === -1) {
+        if (line.indexOf(endOfEnStr) !== -1 && line.indexOf(startOfEnStr) === -1) {
             active = false;
         }
         if (active) {
@@ -73,7 +69,7 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
             }
 
         }
-        if (line.indexOf('```en') !== -1) {
+        if (line.indexOf(startOfEnStr) !== -1) {
             active = true;
         }
     }
@@ -163,6 +159,16 @@ export function getPosDescribe(posName: string, posstyleJson: any) {
     return null;
 }
 
+export function initBingTranslator(){
+    let id = st.Settings.getSetting('bingTransId');
+    let secret = st.Settings.getSetting('bingTransSecret');
+    btTranslator = bt.init({
+        client_id: id,
+        client_secret: secret
+    });
+
+}
+
 export function translateInnerWord(activeEditor: vscode.TextEditor,endOfLine:string) {
     let startPos = activeEditor.selection.start;
     let endPos = activeEditor.selection.end;
@@ -171,7 +177,7 @@ export function translateInnerWord(activeEditor: vscode.TextEditor,endOfLine:str
     let selectText = activeEditor.document.getText().slice(selectStart, selectEnd);
     if (selectText !== '') {
         vscode.window.setStatusBarMessage('translating...');
-        bt.translate(selectText, 'en', 'ja', function (err, res) {
+        btTranslator.translate(selectText, 'en', 'ja', function (err, res) {
             let text = res.translated_text;
             if (text !== '') {
                 let sentence = '[ ' + selectText + ' : ' + text + ' ]'+endOfLine
@@ -182,7 +188,7 @@ export function translateInnerWord(activeEditor: vscode.TextEditor,endOfLine:str
                     builder.insert(wordStart, sentence);
                 });
                 let transWordStyle = vscode.window.createTextEditorDecorationType({
-                    color: '#878787'
+                    color: st.Settings.getSetting('innerTransColor')
                 });
                 transWordStyleList.push(transWordStyle);
                 activeEditor.setDecorations(transWordStyle, [{ range: new vscode.Range(wordStart, wordEnd), hoverMessage: null }]);

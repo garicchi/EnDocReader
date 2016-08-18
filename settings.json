@@ -1,0 +1,44 @@
+{
+    "startOfEnStr":"$$$en",
+    "endOfEnStr":"$$$",
+    "bingTransId":"endocreader",
+    "bingTransSecret":"TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=",
+    "innerTransColor":"#878787",
+    "posData": [
+        {
+            "name": "noun",
+            "ja": "名詞",
+            "color": "#00a7db"
+        },
+        {
+            "name": "adjective",
+            "ja": "形容詞",
+            "color": "#6cbb5a"
+        },
+        {
+            "name": "verb",
+            "ja": "動詞",
+            "color": "#f39700"
+        },
+        {
+            "name": "auxiliaryVerb",
+            "ja": "助動詞",
+            "color": "#0078ba"
+        },
+        {
+            "name": "relative",
+            "ja": "関係詞",
+            "color": "#e5171f"
+        },
+        {
+            "name": "conjunction",
+            "ja": "接続詞",
+            "color": "#e85298"
+        },
+        {
+            "name": "determiner",
+            "ja": "限定詞",
+            "color": "#9b7cb6"
+        }
+    ]
+}

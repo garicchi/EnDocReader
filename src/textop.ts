@@ -1,15 +1,20 @@
 'use strict';
 
 
+import * as st from './settings';
+
 export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:string) {
 
   var lines = text.split(endOfLine);
   var active = false;
   var newLines = Array();
   var buffLine = '';
+  let startOfEnStr = st.Settings.getSetting('startOfEnStr');
+  let endOfEnStr = st.Settings.getSetting('endOfEnStr');
+
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    if (line.indexOf('```') !== -1 && lines.indexOf('```en') === -1) {
+    if (line.indexOf(endOfEnStr) !== -1 && lines.indexOf(startOfEnStr) === -1) {
       active = false;
     }
     if (active) {
@@ -55,7 +60,7 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:str
       newLines.push(line);
     }
 
-    if (line.indexOf('```en') !== -1) {
+    if (line.indexOf(startOfEnStr) !== -1) {
       active = true;
     }
   }
