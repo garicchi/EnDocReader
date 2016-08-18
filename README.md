@@ -10,23 +10,11 @@ VS Codeでレッツ英論ライフ！
 
 VS CodeのExtensionから**endocreader**と検索、インストール、有効化してください
 
-Windowsの場合は現在CRLF改行コードには対応していないのでステータスバーから**LF改行コード**に変更してください
-
 ## Usage
 
-精読したい英文をVS Codeにコピー&ペーストし、<code>\`\`\`en</code>と<code>\`\`\`</code>で囲みます
+精読したい英文をコピペして右クリックのコンテキストメニューから実行したいコマンドを選択します
 
-
-
-\`\`\`en
-
-This is sample sentence.
-
-\`\`\`
-
-
-
-英文を囲んだら<code>Ctrl+Shift+P</code>でコマンド入力画面を立ち上げ、<code>en:</code>と入力することでコマンド一覧を表示し、使いたいコマンドを選択します
+また、<code>Ctrl+Shift+P</code>でコマンド入力画面を立ち上げ、<code>en:</code>と入力することでコマンド一覧を表示し、実行することもできます
 
 ## Format Sentence
 
@@ -36,7 +24,7 @@ This is sample sentence.
 
 書く文の下には空白行が必ず入るので訳を書くことができます
 
-使い方はコマンド入力画面で<code>format line</code>と入力します
+使い方はフォーマットしたい英文を選択し、右クリックから<code>en: Format Line</code>を選択します
 
 ## Part Of Speech Coloring
 
@@ -48,21 +36,33 @@ This is sample sentence.
 
 トグル機能なのでもう一度コマンドを使えば色は元に戻ります
 
-使い方はコマンド入力画面で<code>toggle coloring</code>と入力します
+どの品詞がどの色かは[posData.json](./posdata.json)をみてください
+
+使い方は右クリックから<code>en: Toggle Coloring</code>と入力します
 
 ## Inner Translate
 
-![inner](./img/innertranslate.gif)
+![inner](./img/inner.gif)
 
 選択した単語及び英文を翻訳し、翻訳結果を英文の下に自動記述します
 
 翻訳エンジンはBing Translatorなのでインターネット環境が必須です
 
-使い方は翻訳したいテキストを選択した状態でコマンド入力画面に行き、<code>inner translate</code>と入力します
+使い方は翻訳したいテキストを選択した状態で右クリックから、<code>en: Inner Translate</code>を選択します
+
+## Weblio Translate
+
+![inner](./img/weblio.gif)
+
+選択した単語及び英文をWeblioで翻訳します
+
+Weblioの場合はエディタの右側に翻訳ページがでます　インターネット環境必須です
+
+使い方は翻訳したいテキストを選択した状態で右クリックから、<code>en: Weblio Translate</code>を選択します
 
 ## Google Translate
 
-![google](./img/googletranslate.gif)
+![google](./img/google.gif)
 
 選択した単語及び英文をGoogle翻訳を使って翻訳します
 
@@ -70,7 +70,15 @@ This is sample sentence.
 
 コマンドを実行すると外部ブラウザが立ち上がり、Google翻訳のページで結果を確認できます
 
-使い方は翻訳したいテキストを選択した状態でコマンド入力画面に行き、<code>google translate</code>と入力します
+使い方は翻訳したいテキストを選択した状態で右クリックから<code>en: Google Translate</code>を選択します
+
+## Japanese Folding
+
+![inner](./img/folding.gif)
+
+翻訳行の表示を切り替えます
+
+使い方は右クリックから、<code>en: Toggle Folding of Japanese</code>を選択します
 
 ## ご要望
 Issueやpull requestしてくれると喜びます
