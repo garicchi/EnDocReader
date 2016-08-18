@@ -26,10 +26,6 @@
             {
                 "command": "innerTranslateCommand", 
                 "title": "en: Inner Translate"
-            }, 
-            {
-                "command": "insertEnCommand", 
-                "title": "en: Insert English Block"
             }
         ], 
         "configuration": {
@@ -43,12 +39,7 @@
                     "default": "TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=", 
                     "description": "Your client secret for bing translater api", 
                     "type": "string"
-                }, 
-                "endocreader.endOfEnStr": {
-                    "default": ":::", 
-                    "description": "Special string for ending english sentences", 
-                    "type": "string"
-                }, 
+                },
                 "endocreader.innerTransColor": {
                     "default": "#878787", 
                     "description": "The color of word in inner translate function", 
@@ -58,11 +49,6 @@
                     "default": 2, 
                     "description": "The number of japanese line under english sentence", 
                     "type": "number"
-                }, 
-                "endocreader.startOfEnStr": {
-                    "default": ":::en", 
-                    "description": "Special string for starting english senteces", 
-                    "type": "string"
                 }
             }, 
             "title": "EnDocReader Configuration", 
@@ -71,12 +57,8 @@
         "menus": {
             "editor/context": [
                 {
-                    "command": "insertEnCommand", 
-                    "when": "editorFocus"
-                },
-                {
                     "command": "formatCommand", 
-                    "when": "editorFocus"
+                    "when": "editorHasSelection"
                 },
                 {
                     "command": "toggleColorCommand", 

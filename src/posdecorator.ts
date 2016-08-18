@@ -32,8 +32,6 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
     let active = false;
 
     let posInfoList: PosInfo[] = [];
-    let startOfEnStr = config['startOfEnStr'];
-    let endOfEnStr = config['endOfEnStr'];
 
     if (isDecorate) {
         for (let i = 0; i < posData.length; i++) {
@@ -62,12 +60,7 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
 
     for (var i = 0; i < codeLines.length; i++) {
         let line = codeLines[i]
-        if (line.indexOf(endOfEnStr) !== -1 && line.indexOf(startOfEnStr) === -1) {
-            active = false;
-        }
-        if (active) {
-
-            let posList = getPosList(line);
+        let posList = getPosList(line);
             let posIndex = 0;
             for (let j = 0; j < posList.length; j++) {
                 let posItem = posList[j];
@@ -87,11 +80,6 @@ export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEdit
                 posIndex = index + posItem.word.length;
 
             }
-
-        }
-        if (line.indexOf(startOfEnStr) !== -1) {
-            active = true;
-        }
     }
 
     for (let i = 0; i < posStyleList.length; i++) {
