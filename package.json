@@ -32,6 +32,11 @@
         "command": "innerTranslateCommand",
         "title": "en: Inner Translate"
       }
+      /*,
+      {
+        "command": "googleSyntaxCommand",
+        "title": "en: Google Syntax"
+      }*/
     ]
   },
   "scripts": {

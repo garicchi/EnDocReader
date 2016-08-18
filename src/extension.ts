@@ -3,14 +3,13 @@
 import * as vscode from 'vscode';
 import * as textop from './textop';
 import * as posdecorator from './posdecorator';
-
+import * as google from './googleclient';
 
 var toggleColoring = false;
 
 
 export function activate(context: vscode.ExtensionContext) {
   posdecorator.loadPosJson(__dirname + '/../../posstyle.json');
-
 
   let formatDis = vscode.commands.registerCommand('formatCommand', () => {
     let activeEditor = vscode.window.activeTextEditor;
@@ -23,7 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
       let allRange = new vscode.Range(startPos, endPos);
       builder.replace(allRange, split);
     });
-
+    
     vscode.window.setStatusBarMessage('format english done!');
   });
   context.subscriptions.push(formatDis);
@@ -61,6 +60,16 @@ export function activate(context: vscode.ExtensionContext) {
     posdecorator.translateInnerWord(activeEditor);
   });
   context.subscriptions.push(translateInnerDis);
+
+  /*
+  let syntaxDis = vscode.commands.registerCommand('googleSyntaxCommand', () => {
+    let activeEditor = vscode.window.activeTextEditor;
+    google.decorateSyntax('We propose a solution to the double-spending problem using a peer-to-peer network.');
+  });
+  context.subscriptions.push(syntaxDis);
+
+  */
+  
 }
 
 // this method is called when your extension is deactivated
