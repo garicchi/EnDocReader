@@ -33,48 +33,73 @@
             }
         ], 
         "configuration": {
-          "type":"object",
-          "title":"EnDocReader Configuration",
-          "properties":{
-            "endocreader.bingTransId":{
-              "type":"string",
-              "default":"endocreader",
-              "description":"Your client id for bing translater api"
-            },
-            "endocreader.bingTransSecret":{
-              "type":"string",
-              "default":"TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=",
-              "description":"Your client secret for bing translater api"
+            "properties": {
+                "endocreader.bingTransId": {
+                    "default": "endocreader", 
+                    "description": "Your client id for bing translater api", 
+                    "type": "string"
+                }, 
+                "endocreader.bingTransSecret": {
+                    "default": "TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=", 
+                    "description": "Your client secret for bing translater api", 
+                    "type": "string"
+                }, 
+                "endocreader.endOfEnStr": {
+                    "default": ":::", 
+                    "description": "Special string for ending english sentences", 
+                    "type": "string"
+                }, 
+                "endocreader.innerTransColor": {
+                    "default": "#878787", 
+                    "description": "The color of word in inner translate function", 
+                    "type": "string"
+                }, 
+                "endocreader.japaneseLineNum": {
+                    "default": 2, 
+                    "description": "The number of japanese line under english sentence", 
+                    "type": "number"
+                }, 
+                "endocreader.startOfEnStr": {
+                    "default": ":::en", 
+                    "description": "Special string for starting english senteces", 
+                    "type": "string"
+                }
             }, 
-            "endocreader.startOfEnStr":{
-              "type":"string",
-              "default":":::en",
-              "description":"Special string for starting english senteces"
-            }, 
-            "endocreader.endOfEnStr":{
-              "type":"string",
-              "default":":::",
-              "description":"Special string for ending english sentences"
-            },
-            "endocreader.innerTransColor":{
-              "type":"string",
-              "default":"#878787",
-              "description":"The color of word in inner translate function"
-            },
-            "endocreader.japaneseLineNum":{
-              "type":"number",
-              "default":2,
-              "description":"The number of japanese line under english sentence"
-            }
-          }
-            
-        },
+            "title": "EnDocReader Configuration", 
+            "type": "object"
+        }, 
         "menus": {
-          "editor/context": [{
-            "when": "editorFocus",
-            "command": "insertEnCommand"
-          }]
-      }
+            "editor/context": [
+                {
+                    "command": "insertEnCommand", 
+                    "when": "editorFocus"
+                },
+                {
+                    "command": "formatCommand", 
+                    "when": "editorFocus"
+                },
+                {
+                    "command": "toggleColorCommand", 
+                    "when": "editorFocus"
+                },
+                {
+                    "command": "innerTranslateCommand", 
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "googleTranslateCommand", 
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "weblioCommand", 
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "markdown.showPreview", 
+                    "when": "editorFocus"
+                }
+            ]
+        }
     }, 
     "dependencies": {
         "bing-translate": "0.0.2", 
