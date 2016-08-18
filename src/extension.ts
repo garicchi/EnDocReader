@@ -4,13 +4,14 @@ import * as vscode from 'vscode';
 import * as textop from './textop';
 import * as posdecorator from './posdecorator';
 import * as fs from 'fs';
+import * as path from 'path';
 
 var toggleColoring = false;
 var activeEOL = null;
-
+let rootDir = path.join(__dirname,'..','..');
 
 export function activate(context: vscode.ExtensionContext) {
-  posdecorator.loadPosData(__dirname+'/../../posData.json');
+  posdecorator.loadPosData(path.join(rootDir,'posData.json'));
   updateActiveEof();
 
   vscode.window.onDidChangeActiveTextEditor(function(){
@@ -73,12 +74,12 @@ export function activate(context: vscode.ExtensionContext) {
     let selectText = activeEditor.document.getText().slice(selectStart, selectEnd);
     let url = vscode.Uri.parse('http://ejje.weblio.jp/content/' + selectText);
     if (selectText !== '') {
-      let previewPath = __dirname+'/../../previewWeblio.html';
+      let previewPath = path.join(rootDir,'previewWeblio.html');
       let content = fs.readFileSync(previewPath, 'utf8');
       content = content.replace(/src=.*" /g,'src="'+url+'" ');
       fs.writeFileSync(previewPath,content,'utf-8');
 
-      let previewUri = vscode.Uri.parse('file://'+previewPath);
+      let previewUri = vscode.Uri.parse('file:'+previewPath);
       
       return vscode.commands.executeCommand('vscode.previewHtml', previewUri,vscode.ViewColumn.Two,'Weblio').then((success) => {
       }, (reason) => {
