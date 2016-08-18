@@ -3,25 +3,21 @@
 import * as vscode from 'vscode';
 import * as textop from './textop';
 import * as posdecorator from './posdecorator';
-
+import * as st from './settings';
 
 var toggleColoring = false;
 var activeEOF = null;
 
 
 export function activate(context: vscode.ExtensionContext) {
-  posdecorator.loadPosJson(__dirname + '/../../posstyle.json');
+  st.Settings.load(__dirname + '/../../settings.json');
+  updateActiveEof();
 
   vscode.window.onDidChangeActiveTextEditor(function(){
-    let activeEditor = vscode.window.activeTextEditor;
-    let text = activeEditor.document.getText();
-    if(text.indexOf('\r\n') == -1){
-      activeEOF = '\n'
-    }else{
-      activeEOF = '\r\n'
-    }
+    updateActiveEof();
   });
-
+  posdecorator.initBingTranslator();
+  
   let formatDis = vscode.commands.registerCommand('formatCommand', () => {
     let activeEditor = vscode.window.activeTextEditor;
     let text = activeEditor.document.getText();
@@ -71,8 +67,19 @@ export function activate(context: vscode.ExtensionContext) {
     posdecorator.translateInnerWord(activeEditor,activeEOF);
   });
   context.subscriptions.push(translateInnerDis);
+
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+}
+
+function updateActiveEof(){
+    let activeEditor = vscode.window.activeTextEditor;
+    let text = activeEditor.document.getText();
+    if(text.indexOf('\r\n') == -1){
+      activeEOF = '\n'
+    }else{
+      activeEOF = '\r\n'
+    }
 }
