@@ -1,8 +1,9 @@
 'use strict';
 
-export function getSplitLine(text: string, isWhiteLineAdd: boolean) {
 
-  var lines = text.split('\n');
+export function getSplitLine(text: string, isWhiteLineAdd: boolean,endOfLine:string) {
+
+  var lines = text.split(endOfLine);
   var active = false;
   var newLines = Array();
   var buffLine = '';
@@ -24,7 +25,7 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean) {
         var insertNewLine = false;
         if (buffLine[j] === '.') {
           if ((buffLine.length - 1) >= (j + 1)) {
-            if (buffLine[j + 1] !== '\n\n') {
+            if (buffLine[j + 1] !== endOfLine+endOfLine) {
               insertNewLine = true;
             } else {
               insertNewLine = false;
@@ -34,20 +35,20 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean) {
         }
 
         if (insertNewLine) {
-          currentLine += '\n';
+          currentLine += endOfLine;
           if (isWhiteLineAdd) {
-            currentLine += '\n'
+            currentLine += endOfLine
           }
         }
       }
       if (isWhiteLineAdd) {
         if ((buffLine.length - 1) >= (i + 1)) {
           if (buffLine[i] !== '' && buffLine[i + 1] !== '') {
-            currentLine += '\n'
+            currentLine += endOfLine
           }
         }
       }
-      currentLine = currentLine.split('\n ').join('\n');
+      currentLine = currentLine.split(endOfLine+' ').join(endOfLine);
       newLines.push(currentLine);
       buffLine = '';
     } else {
@@ -62,5 +63,5 @@ export function getSplitLine(text: string, isWhiteLineAdd: boolean) {
     newLines.push(buffLine);
     buffLine = '';
   }
-  return newLines.join('\n');
+  return newLines.join(endOfLine);
 }

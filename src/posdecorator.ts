@@ -34,9 +34,9 @@ export function loadPosJson(jsonPath: string) {
     }
 }
 
-export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEditor, isDecorate: boolean) {
+export function decoratePartOfSpeech(text: string, activeEditor: vscode.TextEditor, isDecorate: boolean,endOfLine:string) {
 
-    let codeLines = text.split('\n');
+    let codeLines = text.split(endOfLine);
     let active = false;
 
     let posInfoList: PosInfo[] = [];
@@ -163,7 +163,7 @@ export function getPosDescribe(posName: string, posstyleJson: any) {
     return null;
 }
 
-export function translateInnerWord(activeEditor: vscode.TextEditor) {
+export function translateInnerWord(activeEditor: vscode.TextEditor,endOfLine:string) {
     let startPos = activeEditor.selection.start;
     let endPos = activeEditor.selection.end;
     let selectStart = activeEditor.document.offsetAt(startPos);
@@ -174,7 +174,7 @@ export function translateInnerWord(activeEditor: vscode.TextEditor) {
         bt.translate(selectText, 'en', 'ja', function (err, res) {
             let text = res.translated_text;
             if (text !== '') {
-                let sentence = '[ ' + selectText + ' : ' + text + ' ]\n'
+                let sentence = '[ ' + selectText + ' : ' + text + ' ]'+endOfLine
                 let wordStart = new vscode.Position(startPos.line + 1, 0);
                 let wordEnd = new vscode.Position(startPos.line + 1, sentence.length - 1);
                 activeEditor.edit((builder) => {
