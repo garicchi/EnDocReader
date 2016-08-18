@@ -1,63 +1,63 @@
 {
     "activationEvents": [
         "*"
-    ], 
+    ],
     "categories": [
         "Other"
-    ], 
+    ],
     "contributes": {
         "commands": [
             {
-                "command": "toggleColorCommand", 
+                "command": "toggleColorCommand",
                 "title": "en: Toggle Coloring"
-            }, 
+            },
             {
-                "command": "formatCommand", 
+                "command": "formatCommand",
                 "title": "en: Format Line"
-            }, 
+            },
             {
-                "command": "googleTranslateCommand", 
+                "command": "googleTranslateCommand",
                 "title": "en: Google Translate"
-            }, 
+            },
             {
-                "command": "weblioCommand", 
+                "command": "weblioCommand",
                 "title": "en: Weblio Translate"
-            }, 
+            },
             {
-                "command": "innerTranslateCommand", 
+                "command": "innerTranslateCommand",
                 "title": "en: Inner Translate"
-            }, 
+            },
             {
                 "command": "toggleJaFoldCommand", 
                 "title": "en: Toggle Folding of Japanese"
             }
-        ], 
+        ],
         "configuration": {
             "properties": {
                 "endocreader.bingTransId": {
-                    "default": "endocreader", 
-                    "description": "Your client id for bing translater api", 
+                    "default": "endocreader",
+                    "description": "Your client id for bing translater api",
                     "type": "string"
-                }, 
+                },
                 "endocreader.bingTransSecret": {
-                    "default": "TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=", 
-                    "description": "Your client secret for bing translater api", 
+                    "default": "TBmW6RRy6vISr5RAr7g919C6mH5V1t54XxmYPUdIeIk=",
+                    "description": "Your client secret for bing translater api",
                     "type": "string"
                 },
                 "endocreader.innerTransColor": {
-                    "default": "#878787", 
-                    "description": "The color of word in inner translate function", 
+                    "default": "#878787",
+                    "description": "The color of word in inner translate function",
                     "type": "string"
-                }, 
+                },
                 "endocreader.japaneseLineNum": {
-                    "default": 2, 
-                    "description": "The number of japanese line under english sentence", 
+                    "default": 2,
+                    "description": "The number of japanese line under english sentence",
                     "type": "number"
                 }
-            }, 
-            "title": "EnDocReader Configuration", 
+            },
+            "title": "EnDocReader Configuration",
             "type": "object"
-        }, 
+        },
         "menus": {
             "editor/context": [
                 {
@@ -65,23 +65,23 @@
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "toggleColorCommand", 
+                    "command": "toggleColorCommand",
                     "when": "editorFocus"
                 },
                 {
-                    "command": "innerTranslateCommand", 
+                    "command": "innerTranslateCommand",
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "googleTranslateCommand", 
+                    "command": "googleTranslateCommand",
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "weblioCommand", 
+                    "command": "weblioCommand",
                     "when": "editorHasSelection"
                 },
                 {
-                    "command": "markdown.showPreview", 
+                    "command": "markdown.showPreview",
                     "when": "editorFocus"
                 },
                 {
@@ -90,28 +90,28 @@
                 }
             ]
         }
-    }, 
+    },
     "dependencies": {
-        "bing-translate": "0.0.2", 
-        "googleapis": "^12.3.0", 
+        "bing-translate": "0.0.2",
+        "googleapis": "^12.3.0",
         "pos": "^0.3.0"
-    }, 
-    "description": "extenstion for english document reading", 
+    },
+    "description": "extenstion for english document reading",
     "devDependencies": {
-        "typescript": "^1.8.5", 
+        "typescript": "^1.8.5",
         "vscode": "^0.11.0"
-    }, 
-    "displayName": "EnDocReader", 
+    },
+    "displayName": "EnDocReader",
     "engines": {
         "vscode": "^1.0.0"
-    }, 
-    "main": "./out/src/extension", 
-    "name": "endocreader", 
-    "publisher": "garicchi", 
+    },
+    "main": "./out/src/extension",
+    "name": "endocreader",
+    "publisher": "garicchi",
     "scripts": {
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./", 
-        "postinstall": "node ./node_modules/vscode/bin/install", 
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
-    }, 
-    "version": "1.0.0"
+    },
+    "version": "1.1.0"
 }
